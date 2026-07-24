@@ -1,10 +1,11 @@
 import { useSetRecoilState } from "recoil";
 import Lista from "../atoms/ListadeTarefas";
 import { useState } from "react";
+import { Form } from "../Styles/Styles-input";
 
 export default function Input() {
-  const setList = useSetRecoilState(Lista);
-  const [tarefa, setTarefa] = useState('');
+  const setList = useSetRecoilState(Lista)
+  const [tarefa, setTarefa] = useState('')
 
   const handleClick = (e) => {
     const novaTarefa = ({
@@ -13,25 +14,25 @@ export default function Input() {
         concluida: false
     })
 
-    e.preventDefault();
+    e.preventDefault()
 
     if (tarefa === "" || tarefa.trim() === "") {
-      alert("Input nao pode estar vazio");
-      setTarefa("");
+      alert("Input nao pode estar vazio")
+      setTarefa("")
     } else {
-      setList((prev) => [...prev, novaTarefa]);
-      setTarefa("");
+      setList((prev) => [...prev, novaTarefa])
+      setTarefa("")
     }
 };
 
   const handleChange = (e) => {
-    setTarefa(e.target.value);
-  };
+    setTarefa(e.target.value)
+  }
 
   return (
-    <form>
+    <Form>
       <input type="text" onChange={handleChange} value={tarefa} />
       <button onClick={handleClick}>Adicionar</button>
-    </form>
-  );
+    </Form>
+  )
 }

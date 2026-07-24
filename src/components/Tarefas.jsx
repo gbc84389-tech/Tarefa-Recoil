@@ -1,11 +1,11 @@
+import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Lista from "../atoms/ListadeTarefas";
-import Filtro from "../atoms/Filtro";
 import listaFiltrada from "../selectors/VerifyTarefas";
+import { ContainerLista } from "../Styles/Styles-tarefas";
 
 export default function Tarefas() {
   const [lista, setLista] = useRecoilState(Lista);
-  const [filtro, setFiltro] = useRecoilState(Filtro);
   const listafiltrada = useRecoilValue(listaFiltrada);
 
   const handleExcluir = (id) => {
@@ -14,7 +14,8 @@ export default function Tarefas() {
   };
 
   const handleEditar = (id) => {
-    const edicao = prompt("Edite a tarefa");
+    const tarefaAtual = lista.find((item) => item.id === id)
+    const edicao = prompt("Edite a tarefa", tarefaAtual.tarefa);
     if (edicao === null || edicao === "" || edicao.trim() === "") {
       alert("Erro - acao cancelada/input vazio");
       return;
@@ -36,22 +37,10 @@ export default function Tarefas() {
     setLista(novaLista);
   };
 
-  const handleFiltro = () => {
-    if (filtro === "todas") {
-      setFiltro("pendentes");
-    } else if (filtro === "pendentes") {
-      setFiltro("concluidas");
-    } else {
-      setFiltro("todas");
-    }
-  };
+  
 
   return (
-    <>
-      <div>
-        <button onClick={handleFiltro}>{filtro}</button>
-      </div>
-
+    <ContainerLista $ativo = {listafiltrada.length}>
       {listafiltrada.map((tarefa) => (
         <li key={tarefa.id}>
           <input
@@ -60,10 +49,10 @@ export default function Tarefas() {
             checked={tarefa.concluida}
           />
           <p>{tarefa.tarefa}</p>
-          <button onClick={() => handleEditar(tarefa.id)}>Editar</button>
-          <button onClick={() => handleExcluir(tarefa.id)}>Excluir</button>
+          <button onClick={() => handleEditar(tarefa.id)} style={{backgroundColor: '#e09f3eb1'}}>Editar</button>
+          <button onClick={() => handleExcluir(tarefa.id)} style={{backgroundColor: '#c1121eb1'}}>Excluir</button>
         </li>
       ))}
-    </>
+    </ContainerLista>
   );
 }
